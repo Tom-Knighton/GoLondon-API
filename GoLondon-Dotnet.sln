@@ -3,7 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 25.0.1700.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoLondonAPI", "GoLondonAPI\GoLondonAPI.csproj", "{7202E8B7-0CE2-4B59-B6AD-7327F305476D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoLondonAPI", "GoLondonAPI\GoLondonAPI.csproj", "{ED89FC7B-583B-42D1-A0A2-459A1E74994B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{98523B76-E3CC-4B13-9214-3C4E31B28F02}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +16,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7202E8B7-0CE2-4B59-B6AD-7327F305476D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7202E8B7-0CE2-4B59-B6AD-7327F305476D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7202E8B7-0CE2-4B59-B6AD-7327F305476D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7202E8B7-0CE2-4B59-B6AD-7327F305476D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED89FC7B-583B-42D1-A0A2-459A1E74994B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED89FC7B-583B-42D1-A0A2-459A1E74994B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED89FC7B-583B-42D1-A0A2-459A1E74994B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED89FC7B-583B-42D1-A0A2-459A1E74994B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

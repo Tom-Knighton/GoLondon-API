@@ -1,28 +1,64 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using GoLondonAPI.Data;
+using GoLondonAPI.Domain.Services;
+using GoLondonAPI.Services;
+using Microsoft.AspNetCore.Http.Json;
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+
+builder.Services.AddControllers().AddNewtonsoftJson(o =>
+{
+    o.SerializerSettings.Converters.Add(new StringEnumConverter());
+});
+
+SetupServices(builder);
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(o =>
+    {
+        o.IncludeXmlComments(XmlComments.CommentFilePath);
+    });
+    builder.Services.AddSwaggerGenNewtonsoftSupport();
+}
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
-app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.Run();
 
+static void SetupServices(WebApplicationBuilder builder)
+{
+
+    JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+    {
+        Converters = new JsonConverter[] { new StringEnumConverter() }
+    };
+
+    builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("GoLondon"));
+
+    builder.Services.AddScoped<ISearchService, SearchService>();
+    builder.Services.AddScoped<IStopPointService, StopPointService>();
+    builder.Services.AddScoped<ILineService, LineService>();
+    builder.Services.AddScoped<IMetaService, MetaService>();
+    builder.Services.AddScoped<IJourneyService, JourneyService>();
+    builder.Services.AddScoped<IVehicleService, VehicleService>();
+
+    builder.Services.AddTransient<IAPIClient, APIClient>();
+}

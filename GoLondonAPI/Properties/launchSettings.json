@@ -1,30 +1,30 @@
-﻿{
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:40977",
-      "sslPort": 44357
+      "applicationUrl": "http://localhost:39092",
+      "sslPort": 44317
     }
   },
   "profiles": {
-    "GoLondonAPI": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
+    "IIS Express": {
+      "commandName": "IISExpress",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7016;http://localhost:5026",
+      "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "IIS Express": {
-      "commandName": "IISExpress",
+    "GoLondonAPI": {
+      "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7205;http://localhost:5151",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
 }
-
-
