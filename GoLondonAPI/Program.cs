@@ -16,24 +16,18 @@ builder.Services.AddControllers().AddNewtonsoftJson(o =>
 
 SetupServices(builder);
 
-if (builder.Environment.IsDevelopment())
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(o =>
 {
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen(o =>
-    {
-        o.IncludeXmlComments(XmlComments.CommentFilePath);
-    });
-    builder.Services.AddSwaggerGenNewtonsoftSupport();
-}
+    o.IncludeXmlComments(XmlComments.CommentFilePath);
+});
+builder.Services.AddSwaggerGenNewtonsoftSupport();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
+
 
 app.UseHttpsRedirection();
 
