@@ -1,0 +1,108 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GoLondonAPI</name>
+    </assembly>
+    <members>
+        <member name="M:GoLondonAPI.Controllers.JourneyController.GetJourneys(System.String,System.String,System.String,System.DateTime,GoLondonAPI.Domain.Enums.JourneyDateType)">
+            <summary>
+            Returns a list of possible journeys that can be made from one Point to another
+            </summary>
+            <param name="from">Where to depart, can be stop point id, ICS id or coordinates as 'lat,long'</param>
+            <param name="to">Where to arrive, can be stop point id, ICS id or coordinates as 'lat,long'</param>
+            <param name="via">Optional: travel through point on the journey. Can be stop point id, ICS id or coordinates as 'lat,long'</param>
+            <param name="time">Optional: A desired time to either arrive or depart at</param>
+            <param name="timeType">Optional: Whethere the 'time' parameter is the arrive or depart time. Defaults to depart</param>
+            <returns></returns>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.LineController.GetDisruptionsForMode(GoLondonAPI.Domain.Enums.LineMode)">
+            <summary>
+            Returns a list of disruptions affecting the specified line mode
+            </summary>
+            <param name="mode">The line mode to search for disruptions on</param>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.LineController.GetLineStatus(System.String[],System.Boolean)">
+            <summary>
+            Gets the statuses for all lines provided
+            </summary>
+            <param name="lineIds">A comma separated list of line ids</param>
+            <param name="includeDetail">Whether to include details on the disruptions causing any delays or not</param>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.LineController.GetModeStatuses(GoLondonAPI.Domain.Enums.LineMode[],System.Boolean)">
+            <summary>
+            Gets the statuses for all lines on the line modes provided
+            </summary>
+            <param name="lineModes">The line modes, comma separated, to get the statuses for</param>
+            <param name="includeDetail">Whether to include details on the disruptions causing any delays or not</param>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.LineController.GetGeneralStatus(GoLondonAPI.Domain.Enums.LineMode[])">
+            <summary>
+            Gets the general status string description for a group of LineModes
+            </summary>
+            <remarks>This returns a set string from the <c>LineModeGroupStatusType</c> enum</remarks>
+            <param name="lineModes">The general status of the line modes selected</param>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.MetaController.GetLineModes">
+            <summary>
+            Returns the possible line modes, used for/in several Line endpoints and data
+            </summary>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.MetaController.GetAllLineIds(GoLondonAPI.Domain.Enums.LineMode[])">
+            <summary>
+            Gets a list of LineIds for a specified mode
+            </summary>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.MetaController.GetDisruptionTypes">
+            <summary>
+            Returns the possible Delay Types
+            </summary>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.SearchController.SearchStopPointsAround(System.Single,System.Single,System.Collections.Generic.List{GoLondonAPI.Domain.Enums.LineMode},System.Single)">
+            <summary>
+            Returns a list of StopPoints around a specified location
+            </summary>
+            <param name="lat">The latitiude of the coordinate to search around</param>
+            <param name="lon">The longitutde of the coordinate to search around</param>
+            <param name="modesToFilterBy">Filter by a list of line modes, can be null for no filter</param>
+            <param name="radius">The radius around the center to search, in metres, defaults to 200</param>
+            <remarks>The TFL api appears to have trouble returning results with a radius above 1000</remarks>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.SearchController.SearchStopPointsByName(System.String,System.Collections.Generic.List{GoLondonAPI.Domain.Enums.LineMode},System.Boolean,System.Boolean)">
+            <summary>
+            Returns a list of StopPoints (and optionally, points of interest) filtered by their (partial) common name 
+            </summary>
+            <param name="query">The query to search for</param>
+            <param name="modesToFilterBy">Filter by a list of line modes, can be null for no filter</param>
+            <param name="includePOI">Whether or not to include points of interest, defaults to false</param>
+            <param name="includeAddresses">Whether or not to include addresses and postcodes, defaults to false</param>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.StopPointController.GetStopPointyId(System.String[])">
+            <summary>
+            Returns detailed StopPoint information for all valid stop point ids, separated by commas
+            </summary>
+            <param name="ids">The ids (from StopPoint.id) of each stop point, comma separated</param>
+            <returns>Array of StopPoint models</returns>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.StopPointController.GetEstimatedArrivals(System.String)">
+            <summary>
+            Returns all estimated arrivals for a specified StopPoint. Arrivals returned sorted by line, then platform and direction.
+            </summary>
+            <remarks>
+            <para>
+            All arrivals are returned sorted by the soonest to arrive. 
+            </para>
+            <para>
+            If the stop point is a HUB, the method will return arrivals for each valid child
+            </para>
+            </remarks>
+            <param name="stopId">The id of the stop point</param>
+            <returns></returns>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.VehicleController.GetVehicleArrivals(System.String)">
+            <summary>
+            Returns an ordered list of StopPointArrivals for a specified vehicle
+            </summary>
+            <param name="vehicleId">The id of the vehicle, i.e. the license plate of a bus</param>
+        </member>
+    </members>
+</doc>

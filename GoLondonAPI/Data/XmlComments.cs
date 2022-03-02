@@ -9,7 +9,7 @@ namespace GoLondonAPI.Data
         {
             get
             {
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlFile = $"GoLondonAPI.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 return xmlPath;
             }
