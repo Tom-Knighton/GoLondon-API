@@ -1,0 +1,18 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /App
+
+COPY *.csproj ./
+RUN dotnet restore
+
+
+COPY . ./
+RUN dotnet publish -c Release -o out
+COPY appsettings.json out/appsettings.json
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /App
+COPY --from=build-env /App/out .
+EXPOSE 6003
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_URLS=http://*:6003
+ENTRYPOINT ["dotnet", "GoLondonAPI.dll"]
