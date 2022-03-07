@@ -20,8 +20,8 @@ namespace GoLondonAPI.Services
         {
             List<Journey> journeys = new List<Journey>();
 
-            List<string> toPoints = await DisambiguateLocation(to);
-            List<string> fromPoints = await DisambiguateLocation(from);
+            List<string> toPoints = await _stopPointService.DisambiguateStopPoint(to);
+            List<string> fromPoints = await _stopPointService.DisambiguateStopPoint(from);
 
             List<Tuple<string, string>> allOptions = (from fromPoint in fromPoints from toPoint in toPoints select new Tuple<string, string>(fromPoint, toPoint)).ToList();
 
@@ -38,27 +38,6 @@ namespace GoLondonAPI.Services
             }
 
             return journeys.OrderBy(j => j.duration).ToList();
-        }
-
-        private async Task<List<string>> DisambiguateLocation(string id)
-        {
-            List<string> points = new List<string>();
-            if (id.Contains(","))
-            {
-                points = new List<string> { id };
-            }
-            else
-            {
-                StopPoint stopPoint = (await _stopPointService.GetStopPointsByIdsAsync(new string[] { id })).FirstOrDefault();
-                if (stopPoint == null)
-                {
-                    return new List<string>();
-                }
-
-                points = stopPoint.childStationIds;
-            }
-
-            return points;
         }
     }
 }

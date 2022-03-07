@@ -11,6 +11,7 @@ namespace GoLondonAPI.Domain.Services
         Task<List<StopPointArrivalLineGroup>> GetEstimatedArrivalsForAsync(string stopPointId);
         Task<List<StopPoint>> SearchStopPointsAsync(string search, int maxResults = 0);
         Task<List<StopPoint>> SearchStopPointsAsync(string search, List<LineMode> filters, int maxResults = 0);
+        Task<List<string>> DisambiguateStopPoint(string stopPointId);
     }
 }
 

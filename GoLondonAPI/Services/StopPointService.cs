@@ -59,6 +59,27 @@ namespace GoLondonAPI.Services
             StopPointSearchResult stopPoints = await _apiClient.PerformAsync<StopPointSearchResult>(APIClientType.TFL, $"StopPoint/Search{query}");
             return stopPoints.matches;
         }
+
+        public async Task<List<string>> DisambiguateStopPoint(string stopPointId)
+        {
+            List<string> points = new List<string>();
+            if (stopPointId.Contains(","))
+            {
+                points = new List<string> { stopPointId };
+            }
+            else
+            {
+                StopPoint stopPoint = (await GetStopPointsByIdsAsync(new string[] { stopPointId })).FirstOrDefault();
+                if (stopPoint == null)
+                {
+                    return new List<string>();
+                }
+
+                points = stopPoint.childStationIds;
+            }
+
+            return points;
+        }
     }
 }
 
