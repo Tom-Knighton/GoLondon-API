@@ -36,6 +36,7 @@ namespace GoLondonAPI.Controllers
         /// <param name="lineIds">A comma separated list of line ids</param>
         /// <param name="includeDetail">Whether to include details on the disruptions causing any delays or not</param>
         [HttpGet("GetLineInfo/{lineIds}")]
+        [Produces(typeof(List<Line>))]
         public async Task<IActionResult> GetLineStatus(string[] lineIds, bool includeDetail = false)
         {
             return Ok(await _lineService.GetLineInfo(lineIds.ToList(), includeDetail));
@@ -47,6 +48,7 @@ namespace GoLondonAPI.Controllers
         /// <param name="lineModes">The line modes, comma separated, to get the statuses for</param>
         /// <param name="includeDetail">Whether to include details on the disruptions causing any delays or not</param>
         [HttpGet("GetLineInfoForModes")]
+        [Produces(typeof(List<Line>))]
         public async Task<IActionResult> GetModeStatuses([Required][FromQuery] LineMode[] lineModes, bool includeDetail = false)
         {
             if (lineModes.Length == 0)

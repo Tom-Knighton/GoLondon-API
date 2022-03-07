@@ -29,6 +29,7 @@ namespace GoLondonAPI.Controllers
         /// <param name="radius">The radius around the center to search, in metres, defaults to 200</param>
         /// <remarks>The TFL api appears to have trouble returning results with a radius above 1000</remarks>
         [HttpGet("Around/{lat}/{lon}")]
+        [Produces(typeof(List<Point>))]
         public async Task<IActionResult> SearchStopPointsAround(float lat, float lon, List<LineMode> modesToFilterBy, float radius = 200)
         {
             return Ok(await _searchService.SearchAroundAsync(lat, lon, modesToFilterBy, radius));
