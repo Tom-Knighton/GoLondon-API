@@ -13,18 +13,18 @@ namespace GoLondonAPI.Services
 
         public async Task<List<Disruption>> GetDisruptionsAsync(LineMode mode)
         {
-            return await _apiClient.PerformAsync<List<Disruption>>(APIClientType.TFL, $"Line/Mode/{mode.GetValue()}/Disruption");
+            return await _apiClient.PerformAsync<List<Disruption>>(APIClientType.TFL, $"Line/Mode/{mode.GetValue()}/Disruption") ?? new List<Disruption>();
         }
 
         public async Task<List<Line>> GetLineInfo(List<LineMode> modes, bool includeDetail = false)
         {
             string[] types = modes.Select(m => m.GetValue()).ToArray();
-            return await _apiClient.PerformAsync<List<Line>>(APIClientType.TFL, $"Line/Mode/{string.Join(",", types)}/status?detail={includeDetail}");
+            return await _apiClient.PerformAsync<List<Line>>(APIClientType.TFL, $"Line/Mode/{string.Join(",", types)}/status?detail={includeDetail}") ?? new List<Line>();
         }
 
         public async Task<List<Line>> GetLineInfo(List<string> lineIds, bool includeDetail = false)
         {
-            return await _apiClient.PerformAsync<List<Line>>(APIClientType.TFL, $"Line/{string.Join(",", lineIds)}/status?detail={includeDetail}");
+            return await _apiClient.PerformAsync<List<Line>>(APIClientType.TFL, $"Line/{string.Join(",", lineIds)}/status?detail={includeDetail}") ?? new List<Line>();
         }
 
         public async Task<LineModeGroupStatusType> GetGeneralLineStatus(List<LineMode> lineModes)
