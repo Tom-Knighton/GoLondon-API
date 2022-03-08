@@ -23,7 +23,14 @@ namespace GoLondonAPI.Services
 
         public async Task<T> PerformAsync<T>(APIClientType type, string urlPath, string contentType = "application/json", Method method = Method.Get)
         {
-            return JsonConvert.DeserializeObject<T>(await PerformAsync(type, urlPath, contentType, method));
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(await PerformAsync(type, urlPath, contentType, method));
+            }
+            catch
+            {
+                return default(T);
+            }
         }
 
         public async Task<string> PerformAsync(APIClientType type, string urlPath, string contentType = "application/json", Method method = Method.Get)
