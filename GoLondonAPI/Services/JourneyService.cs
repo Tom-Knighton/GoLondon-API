@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
@@ -41,7 +41,7 @@ namespace GoLondonAPI.Services
 
             foreach(JourneySearchResult res in results)
             {
-                journeys.AddRange(res.journeys);
+                journeys.AddRange(res.journeys ?? new List<Journey>());
             }
 
             return journeys.OrderBy(j => j.duration).ToList();
