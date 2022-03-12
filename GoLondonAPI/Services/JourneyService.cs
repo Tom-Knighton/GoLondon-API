@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
@@ -25,10 +25,17 @@ namespace GoLondonAPI.Services
 
             List<Tuple<string, string>> allOptions = (from fromPoint in fromPoints from toPoint in toPoints select new Tuple<string, string>(fromPoint, toPoint)).ToList();
 
+            string queryParams = $"?nationalSearch=true&useMultiModalCall=true&useRealTimeLiveArrivals=true{(string.IsNullOrEmpty(via) ? "" : $"&via={via}")}";
+            if (time != null)
+            {
+                queryParams += $"&date={time?.ToString("yyyyMMdd")}&time={time?.ToString("HHmm")}&timeIs={(dateType == null ? "departing" : dateType == JourneyDateType.arriveAt ? "arriving" : "departing" )}";
+            }
+
             List<Task<JourneySearchResult>> tasksToDo = new List<Task<JourneySearchResult>>();
             foreach(Tuple<string, string> opts in allOptions)
             {
-                tasksToDo.Add(_apiClient.PerformAsync<JourneySearchResult>(APIClientType.TFL, $"Journey/JourneyResults/{opts.Item1}/to/{opts.Item2}"));
+
+                tasksToDo.Add(_apiClient.PerformAsync<JourneySearchResult>(APIClientType.TFL, $"Journey/JourneyResults/{opts.Item1}/to/{opts.Item2}{queryParams}"));
             }
             List<JourneySearchResult> results = (await Task.WhenAll(tasksToDo)).ToList();
 
