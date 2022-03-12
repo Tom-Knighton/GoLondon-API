@@ -38,13 +38,21 @@ namespace GoLondonAPI.Services
 
         public async Task<List<StopPointArrivalLineGroup>> GetEstimatedArrivalsForAsync(string stopPointId)
         {
-            StopPoint stopPoint = (await GetStopPointsByIdsAsync(new string[] { stopPointId })).FirstOrDefault();
-            if (stopPoint == null)
+            List<string> ids = await DisambiguateStopPoint(stopPointId);
+
+            List<Task<List<StopPointArrival>>> tasksToDo = new List<Task<List<StopPointArrival>>>();
+            foreach (string id in ids)
             {
-                return null;
+                tasksToDo.Add(_apiClient.PerformAsync<List<StopPointArrival>>(APIClientType.TFL, $"StopPoint/{id}/Arrivals"));
             }
 
-            List<StopPointArrival> arrivals = await _apiClient.PerformAsync<List<StopPointArrival>>(APIClientType.TFL, $"StopPoint/{stopPointId}/Arrivals");
+            List<List<StopPointArrival>> results = (await Task.WhenAll(tasksToDo)).ToList();
+            List<StopPointArrival> arrivals = new();
+            foreach(List<StopPointArrival> res in results)
+            {
+                arrivals.AddRange(res ?? new List<StopPointArrival>());
+            }
+
             return arrivals.GetGroupedArrivals();
         }
 
