@@ -12,10 +12,7 @@ COPY appsettings.json out/appsettings.json
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /App
 COPY --from=build-env /App/out .
-
+EXPOSE 6003
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://*:6003
-ENV VIRTUAL_HOST=api.golondon.tomk.online
-ENV LETSENCRYPT_HOST=api.golondon.tomk.online
-
 ENTRYPOINT ["dotnet", "GoLondonAPI.dll"]
