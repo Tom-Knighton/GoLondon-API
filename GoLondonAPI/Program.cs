@@ -28,12 +28,15 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 
+app.UseResponseCompression();
+
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();
 
@@ -55,4 +58,9 @@ static void SetupServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IVehicleService, VehicleService>();
 
     builder.Services.AddTransient<IAPIClient, APIClient>();
+
+    builder.Services.AddResponseCompression(opt =>
+    {
+        opt.EnableForHttps = true;
+    });
 }
