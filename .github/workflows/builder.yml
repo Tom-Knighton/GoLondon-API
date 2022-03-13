@@ -18,7 +18,7 @@ jobs:
             docker rm GoLondonAPIDev 2>/dev/null || true
             cp /home/GoLondon/AppSettings/API/appsettings.Development.json appsettings.Development.json
             docker build -t golondonapi-dev -f GoLondonAPI/Dockerfile.dev .
-            docker create -p 0.0.0.0:6002:6002 --name "GoLondonAPIDev" --restart unless-stopped --network="host" golondonapi-dev
+            docker create -p 0.0.0.0:6002:6002 --name "GoLondonAPIDev" --restart unless-stopped --network net golondonapi-dev
             docker start GoLondonAPIDev
   docker-prod:
     name: Publish - Docker Prod
@@ -31,5 +31,5 @@ jobs:
             docker rm GoLondonAPI 2>/dev/null || true
             cp /home/GoLondon/AppSettings/API/appsettings.json appsettings.json
             docker build -t golondonapi-prod -f GoLondonAPI/Dockerfile.prod .
-            docker create -p 0.0.0.0:6003:6003 --name "GoLondonAPI" --restart unless-stopped --network="host" golondonapi-prod
+            docker create -p 0.0.0.0:6003:6003 --name "GoLondonAPI" --restart unless-stopped --network net golondonapi-prod
             docker start GoLondonAPI
