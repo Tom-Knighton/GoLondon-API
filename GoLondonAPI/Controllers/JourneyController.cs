@@ -28,7 +28,7 @@ namespace GoLondonAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Produces(typeof(List<Journey>))]
-        public async Task<IActionResult> GetJourneys([Required] string from, [Required] string to, string via, DateTime time, [FromQuery] JourneyDateType timeType = JourneyDateType.departAt)
+        public async Task<IActionResult> GetJourneys([Required] string from, [Required] string to, string via, DateTime? time, [FromQuery] JourneyDateType? timeType = JourneyDateType.departAt)
         {
             if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(to))
             {

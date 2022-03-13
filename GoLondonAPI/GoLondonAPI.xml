@@ -4,7 +4,7 @@
         <name>GoLondonAPI</name>
     </assembly>
     <members>
-        <member name="M:GoLondonAPI.Controllers.JourneyController.GetJourneys(System.String,System.String,System.String,System.DateTime,GoLondonAPI.Domain.Enums.JourneyDateType)">
+        <member name="M:GoLondonAPI.Controllers.JourneyController.GetJourneys(System.String,System.String,System.String,System.Nullable{System.DateTime},System.Nullable{GoLondonAPI.Domain.Enums.JourneyDateType})">
             <summary>
             Returns a list of possible journeys that can be made from one Point to another
             </summary>
