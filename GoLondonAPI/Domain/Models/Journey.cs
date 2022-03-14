@@ -3,13 +3,32 @@ using Newtonsoft.Json;
 
 namespace GoLondonAPI.Domain.Models
 {
-    public class Journey
+    public class Journey : IEqualityComparer<Journey>
     {
         public DateTime? startDateTime { get; set; }
         public DateTime? arrivalDateTime { get; set; }
         public int duration { get; set; }
 
         public List<JourneyLeg> legs { get; set; }
+
+        public List<string> modes => legs.Select(l => l.mode.name).ToList();
+
+        public bool Equals(Journey? one, Journey? other)
+        {
+            bool equals = one?.startDateTime == other?.startDateTime &&
+                one?.arrivalDateTime == other?.arrivalDateTime &&
+                one?.legs.Count == other?.legs.Count;
+            return equals;
+        }
+
+        public int GetHashCode(Journey journey)
+        {
+            int startHash = journey.startDateTime.GetHashCode();
+            int arriveHash = journey.arrivalDateTime.GetHashCode();
+            int modesHash = journey.modes.Count();
+
+            return modesHash + arriveHash ^ arriveHash;
+        }
     }
 
     public class JourneyLeg
@@ -26,7 +45,7 @@ namespace GoLondonAPI.Domain.Models
         public JourneyLegPath? path { get; set; }
 
         public List<JourneyLegRouteOption> routeOptions { get; set; }
-        public JourneyMode? mode { get; set; }
+        public JourneyMode mode { get; set; }
         public List<Disruption> disruptions { get; set; }
         public bool isDisrupted { get; set; }
         public bool hasFixedLocations { get; set; }

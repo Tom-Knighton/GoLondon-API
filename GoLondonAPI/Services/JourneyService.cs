@@ -18,7 +18,7 @@ namespace GoLondonAPI.Services
 
         public async Task<List<Journey>> GetPossibleJourneys(string from, string to, string? via = null, DateTime? time = null, JourneyDateType? dateType = null)
         {
-            List<Journey> journeys = new List<Journey>();
+            List<Journey> journeys = new();
 
             List<string> toPoints = await _stopPointService.DisambiguateStopPoint(to);
             List<string> fromPoints = await _stopPointService.DisambiguateStopPoint(from);
@@ -31,10 +31,9 @@ namespace GoLondonAPI.Services
                 queryParams += $"&date={time?.ToString("yyyyMMdd")}&time={time?.ToString("HHmm")}&timeIs={(dateType == null ? "departing" : dateType == JourneyDateType.arriveAt ? "arriving" : "departing" )}";
             }
 
-            List<Task<JourneySearchResult>> tasksToDo = new List<Task<JourneySearchResult>>();
+            List<Task<JourneySearchResult>> tasksToDo = new();
             foreach(Tuple<string, string> opts in allOptions)
             {
-
                 tasksToDo.Add(_apiClient.PerformAsync<JourneySearchResult>(APIClientType.TFL, $"Journey/JourneyResults/{opts.Item1}/to/{opts.Item2}{queryParams}"));
             }
             List<JourneySearchResult> results = (await Task.WhenAll(tasksToDo)).ToList();
@@ -44,7 +43,7 @@ namespace GoLondonAPI.Services
                 journeys.AddRange(res.journeys ?? new List<Journey>());
             }
 
-            return journeys.OrderBy(j => j.duration).ToList();
+            return journeys.Where(j => j.startDateTime >= DateTime.UtcNow).OrderBy(j => j.arrivalDateTime).Distinct(new Journey()).ToList();
         }
     }
 }
