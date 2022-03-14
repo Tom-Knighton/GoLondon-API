@@ -4,6 +4,7 @@ using GoLondonAPI.Services;
 using Microsoft.AspNetCore.Http.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,5 +63,12 @@ static void SetupServices(WebApplicationBuilder builder)
     builder.Services.AddResponseCompression(opt =>
     {
         opt.EnableForHttps = true;
+        opt.Providers.Add<BrotliCompressionProvider>();
+        opt.Providers.Add<GzipCompressionProvider>();
+    });
+
+    builder.Services.Configure<BrotliCompressionProviderOptions>(options =>
+    {
+        options.Level = System.IO.Compression.CompressionLevel.Optimal;
     });
 }
