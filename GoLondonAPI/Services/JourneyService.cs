@@ -40,7 +40,7 @@ namespace GoLondonAPI.Services
 
             foreach(JourneySearchResult res in results)
             {
-                journeys.AddRange(res.journeys.Where(j => j.startDateTime >= DateTime.UtcNow) ?? new List<Journey>());
+                journeys.AddRange(res.journeys?.Where(j => j?.startDateTime >= DateTime.UtcNow) ?? new List<Journey>());
             }
 
             journeys = journeys.Distinct(new Journey()).OrderBy(j => j.arrivalDateTime).ToList();
