@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GoLondonAPI.Controllers
 {
     [Route("api/[controller]")]
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class JourneyController : Controller
     {
         private readonly IJourneyService _journeyService;
