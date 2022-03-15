@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
@@ -25,7 +25,7 @@ namespace GoLondonAPI.Services
 
             List<Tuple<string, string>> allOptions = (from fromPoint in fromPoints from toPoint in toPoints select new Tuple<string, string>(fromPoint, toPoint)).ToList();
 
-            string queryParams = $"?nationalSearch=true&useMultiModalCall=true&useRealTimeLiveArrivals=true{(string.IsNullOrEmpty(via) ? "" : $"&via={via}")}";
+            string queryParams = $"?nationalSearch=true&useMultiModalCall=true&useRealTimeLiveArrivals=true&alternativeCycle=true&alternativeWalking=true{(string.IsNullOrEmpty(via) ? "" : $"&via={via}")}";
             if (time != null)
             {
                 queryParams += $"&date={time?.ToString("yyyyMMdd")}&time={time?.ToString("HHmm")}&timeIs={(dateType == null ? "departing" : dateType == JourneyDateType.arriveAt ? "arriving" : "departing" )}";
