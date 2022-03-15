@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
@@ -40,10 +40,11 @@ namespace GoLondonAPI.Services
 
             foreach(JourneySearchResult res in results)
             {
-                journeys.AddRange(res.journeys ?? new List<Journey>());
+                journeys.AddRange(res.journeys.Where(j => j.startDateTime >= DateTime.UtcNow) ?? new List<Journey>());
             }
 
-            return journeys.Where(j => j.startDateTime >= DateTime.UtcNow).OrderBy(j => j.arrivalDateTime).Distinct(new Journey()).ToList();
+            journeys = journeys.Distinct(new Journey()).OrderBy(j => j.arrivalDateTime).ToList();
+            return journeys;
         }
     }
 }
