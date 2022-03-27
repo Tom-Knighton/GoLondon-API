@@ -56,7 +56,6 @@ namespace GoLondonAPI.Domain.Models
     {
         public string lineString { internal get; set; }
         public List<StopPoint> stopPoints { get; set; }
-        public float[,] linePaths => JsonConvert.DeserializeObject<float[,]>(lineString);
     }
 
     public class JourneyLegInstruction
