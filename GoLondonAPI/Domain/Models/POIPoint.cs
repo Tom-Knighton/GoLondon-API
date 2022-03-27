@@ -11,6 +11,8 @@ namespace GoLondonAPI.Domain.Models
 
         public float lat => center[0];
         public float lon => center[1];
+
+        public string pointType = "POI";
     }
 
     public class POIPointSearchResult

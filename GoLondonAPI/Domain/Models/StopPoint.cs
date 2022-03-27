@@ -10,6 +10,8 @@ namespace GoLondonAPI.Domain.Models
         public string name { get; set; }
         public string commonName { get; set; }
 
+        public string pointType = "Stop";
+
         public List<LineModeGroup> lineModeGroups { get; set; }
         public List<InternalStopPointProperty> additionalProperties { internal get; set; }
         public List<StopPoint> children { get; set; }

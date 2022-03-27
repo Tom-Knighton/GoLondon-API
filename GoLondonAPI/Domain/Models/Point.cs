@@ -5,6 +5,7 @@ namespace GoLondonAPI.Domain.Models
     {
         public float lat { get; set; }
         public float lon { get; set; }
+        public string pointType { get; set; }
     }
 }
 
