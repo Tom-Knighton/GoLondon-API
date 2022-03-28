@@ -10,6 +10,9 @@ namespace GoLondonAPI.Domain.Models
         public string name { get; set; }
         public string commonName { get; set; }
 
+        public string indicator { get; set; }
+        public string stopLetter { get; set; }
+
         public string pointType = "Stop";
 
         public List<LineModeGroup> lineModeGroups { get; set; }
