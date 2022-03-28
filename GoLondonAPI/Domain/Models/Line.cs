@@ -1,4 +1,6 @@
 ﻿using System;
+using GoLondonAPI.Domain.Enums;
+
 namespace GoLondonAPI.Domain.Models
 {
     public class Line
@@ -44,7 +46,7 @@ namespace GoLondonAPI.Domain.Models
 
     public class LineModeGroup
     {
-        public string modeName { get; set; }
+        public LineMode modeName { get; set; }
         public List<string> lineIdentifier { get; set; }
     }
 }

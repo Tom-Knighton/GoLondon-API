@@ -1,10 +1,13 @@
 ﻿using System;
+using GoLondonAPI.Domain.Enums;
+using Newtonsoft.Json;
+
 namespace GoLondonAPI.Domain.Models
 {
     public class StopPoint : Point
     {
         public string icsId { get; set; }
-        public string[] modes { get; set; }
+
         public string zone { get; set; }
         public string id { get; set; }
         public string name { get; set; }
