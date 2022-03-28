@@ -54,7 +54,7 @@ namespace GoLondonAPI.Services
         public async Task<IEnumerable<StopPoint>> SearchAroundAsync(float lat, float lon, List<LineMode> filters, float radius)
         {
             string modes = string.Join(",", filters.Select(m => m.GetValue()));
-            string query = $"?lat={lat}&lon={lon}&stoptypes=NaptanMetroStation,NaptanRailStation,NaptanBusCoachStation,NaptanFerryPort,NaptanPublicBusCoachTram{(filters.Count == 0 ? "" : modes)}&radius={radius}";
+            string query = $"?lat={lat}&lon={lon}&stoptypes=NaptanMetroStation,NaptanRailStation,NaptanBusCoachStation,NaptanFerryPort,NaptanPublicBusCoachTram&modes={(filters.Count == 0 ? "" : modes)}&radius={radius}";
             return (await _apiClient.PerformAsync<StopPointSearchAroundResult>(APIClientType.TFL, $"StopPoint{query}")).stopPoints ?? new List<StopPoint>();
         }
     }
