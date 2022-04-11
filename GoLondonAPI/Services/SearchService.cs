@@ -70,10 +70,16 @@ namespace GoLondonAPI.Services
                 List<StopPoint> busChildren = p.children?.Where(p => !string.IsNullOrEmpty(p.stopLetter)).ToList();
                 if (busChildren?.Any() == true)
                 {
-                    results.AddRange(busChildren);
+                    
                     busChildren.ForEach(bc =>
                     {
-                        p.children?.Remove(bc);
+                        LineModeGroup lineModeGroup = new LineModeGroup();
+                        List<string> identifiers = p.lineGroups.First(c => c.naptanIdReference == bc.naptanId).lineIdentifier.ToList();
+                        lineModeGroup.modeName = LineMode.bus;
+                        lineModeGroup.lineIdentifier = identifiers;
+                        bc.lineModeGroups = new List<LineModeGroup> { lineModeGroup };
+                        results.Add(bc);
+                        p.children?.RemoveAll(c => c.naptanId == bc.naptanId);
                     });
                 }
                 results.Add(p);

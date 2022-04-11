@@ -10,6 +10,7 @@ namespace GoLondonAPI.Domain.Models
 
         public string zone { get; set; }
         public string id { get; set; }
+        public string naptanId { get; set; }
         public string name { get; set; }
         public string commonName { get; set; }
 
@@ -17,6 +18,18 @@ namespace GoLondonAPI.Domain.Models
         public string stopLetter { get; set; }
 
         public string pointType = "Stop";
+
+
+        [JsonIgnore]
+        public string[] modes { get; set; }
+        [JsonProperty("modes")]
+        private string[] modesInternal { set { modes = value; } }
+
+
+        [JsonIgnore]
+        public List<LineGroup> lineGroups { get; set; }
+        [JsonProperty("lineGroup")]
+        public List<LineGroup> lineGroupsInternal { set { lineGroups = value;  } }
 
         public List<LineModeGroup> lineModeGroups { get; set; }
         public List<InternalStopPointProperty> additionalProperties { internal get; set; }

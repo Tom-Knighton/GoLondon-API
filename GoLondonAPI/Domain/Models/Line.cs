@@ -49,5 +49,11 @@ namespace GoLondonAPI.Domain.Models
         public LineMode modeName { get; set; }
         public List<string> lineIdentifier { get; set; }
     }
+
+    public class LineGroup
+    {
+        public string naptanIdReference { get; set; }
+        public string[] lineIdentifier { get; set; }
+    }
 }
 
