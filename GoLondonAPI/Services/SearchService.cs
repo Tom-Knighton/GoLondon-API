@@ -67,14 +67,13 @@ namespace GoLondonAPI.Services
             List<StopPoint> results = new();
             points.ForEach(p =>
             {
-                List<StopPoint> busChildren = p.children?.Where(p => !string.IsNullOrEmpty(p.stopLetter)).ToList();
+                List<StopPoint> busChildren = p.children?.Where(c => c.modes?.Length == 1 && c.modes.First() == "bus").ToList();
                 if (busChildren?.Any() == true)
-                {
-                    
+                {         
                     busChildren.ForEach(bc =>
                     {
                         LineModeGroup lineModeGroup = new LineModeGroup();
-                        List<string> identifiers = p.lineGroups.First(c => c.naptanIdReference == bc.naptanId).lineIdentifier.ToList();
+                        List<string> identifiers = p.lineGroups?.FirstOrDefault(c => c.naptanIdReference == bc.naptanId)?.lineIdentifier?.ToList() ?? new List<string>();
                         lineModeGroup.modeName = LineMode.bus;
                         lineModeGroup.lineIdentifier = identifiers;
                         bc.lineModeGroups = new List<LineModeGroup> { lineModeGroup };

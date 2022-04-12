@@ -19,6 +19,7 @@ namespace GoLondonAPI.Domain.Models
 
         public string pointType = "Stop";
 
+        public string hubNaptanCode { get; set; }
 
         [JsonIgnore]
         public string[] modes { get; set; }
