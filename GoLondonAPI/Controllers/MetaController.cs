@@ -51,7 +51,7 @@ namespace GoLondonAPI.Controllers
             return Ok(_metaService.GetDelayTypes());
         }
 
-
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost("Sync")]
         public async Task<IActionResult> SyncWithTfL()
         {
