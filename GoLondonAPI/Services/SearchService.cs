@@ -3,6 +3,7 @@ using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
 using System.Linq;
+using GoLondonAPI.Data;
 
 namespace GoLondonAPI.Services
 {
@@ -37,7 +38,8 @@ namespace GoLondonAPI.Services
             string queries = $"?query={query}{(filters.Count() == 0 ? "" : $"&modes={string.Join(",", filters.Select(m => m.GetValue()).ToArray())}")}";
             StopPointSearchResult res = await _apiClient.PerformAsync<StopPointSearchResult>(APIClientType.TFL, $"StopPoint/Search{queries}&useStopPointHierarchy=true");
             List<StopPoint> points = res.matches ?? new List<StopPoint>();
-            return useHeirarchy ? points : DeconstructHeirarchy(points);
+            points = useHeirarchy ? points : DeconstructHeirarchy(points);
+            return Global.AddCachedLineModeGroups(points);
         }
 
         private async Task<List<POIPoint>> SearchPOIPointsAsync(string query, bool includePOI, bool includeAddresses)

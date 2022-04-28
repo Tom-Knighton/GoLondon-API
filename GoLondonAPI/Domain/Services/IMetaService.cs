@@ -8,6 +8,7 @@ namespace GoLondonAPI.Domain.Services
         List<LineMode> GetLineModes();
         List<DisruptionDelayType> GetDelayTypes();
         Task<List<string>> GetAllLineIdsAsync(List<LineMode> modes);
+        Task<string> SyncWithTfl();
     }
 }
 

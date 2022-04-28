@@ -7,6 +7,7 @@ namespace GoLondonAPI.Domain.Models
     public class StopPoint : Point
     {
         public string icsId { get; set; }
+        public string icsCode { internal get; set; }
 
         public string zone { get; set; }
         public string id { get; set; }

@@ -50,6 +50,13 @@ namespace GoLondonAPI.Controllers
         {
             return Ok(_metaService.GetDelayTypes());
         }
+
+
+        [HttpPost("Sync")]
+        public async Task<IActionResult> SyncWithTfL()
+        {
+            return Ok(await _metaService.SyncWithTfl());
+        }
     }
 }
 

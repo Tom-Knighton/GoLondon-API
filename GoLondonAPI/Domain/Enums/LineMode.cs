@@ -29,8 +29,17 @@ namespace GoLondonAPI.Domain.Enums
         [EnumMember(Value = "tflrail")]
         tflRail,
 
+        [EnumMember(Value = "elizabeth-line")]
+        elizabethLine,
+
         [EnumMember(Value = "replacement-bus")]
         replacementBus,
+
+        [EnumMember(Value = "cable-car")]
+        cableCar,
+
+        [EnumMember(Value = "tram")]
+        tram
     }
 }
 

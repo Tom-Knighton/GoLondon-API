@@ -1,4 +1,5 @@
 ﻿using System;
+using GoLondonAPI.Data;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
@@ -28,6 +29,29 @@ namespace GoLondonAPI.Services
             string[] types = modes.Select(m => m.GetValue()).ToArray();
             List<Line> lines = await _apiClient.PerformAsync<List<Line>>(APIClientType.TFL, $"Line/Mode/{string.Join(",", types)}");
             return lines.Select(l => l.id).ToList();
+        }
+
+        public async Task<string> SyncWithTfl()
+        {
+            HashSet<InternalLineGroupICS> grouped = new HashSet<InternalLineGroupICS>();
+
+            List<StopPoint> points = await _apiClient.PerformAsync<List<StopPoint>>(APIClientType.TFL, "StopPoint/Type/NaptanMetroStation");
+
+            foreach (StopPoint tube in points.Where(t => !string.IsNullOrEmpty(t.icsCode)))
+            {
+                if (grouped.Any(g => g.ICSCode == tube.icsCode))
+                {
+                    grouped.First(g => g.ICSCode == tube.icsCode || g.ICSCode == tube.icsId).lineModes.AddRange(tube.lineModeGroups);
+                }
+                else
+                {
+                    grouped.Add(new InternalLineGroupICS { ICSCode = tube.icsCode ?? tube.icsId, lineModes = tube.lineModeGroups });
+                }
+            }
+
+            Global.cachedLMGs = grouped;
+
+            return "Recv: " + Global.cachedLMGs.Count.ToString();
         }
     }
 }
