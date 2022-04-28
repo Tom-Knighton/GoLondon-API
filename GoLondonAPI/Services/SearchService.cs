@@ -69,7 +69,7 @@ namespace GoLondonAPI.Services
             List<StopPoint> results = new();
             points.ForEach(p =>
             {
-                List<StopPoint> busChildren = p.children?.Where(c => c.modes?.Length == 1 && c.modes.First() == "bus").ToList();
+                List<StopPoint> busChildren = p.children?.Where(c => c.modes?.Length == 1 && c.modes.First() == LineMode.bus).ToList();
                 if (busChildren?.Any() == true)
                 {         
                     busChildren.ForEach(bc =>
