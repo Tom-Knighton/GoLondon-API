@@ -22,11 +22,7 @@ namespace GoLondonAPI.Domain.Models
 
         public string hubNaptanCode { get; set; }
 
-        [JsonIgnore]
         public string[] modes { get; set; }
-        [JsonProperty("modes")]
-        private string[] modesInternal { set { modes = value; } }
-
 
         [JsonIgnore]
         public List<LineGroup> lineGroups { get; set; }
