@@ -37,7 +37,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.MapHealthChecks("/health");
 
 app.Run();
 
@@ -71,4 +71,6 @@ static void SetupServices(WebApplicationBuilder builder)
     {
         options.Level = System.IO.Compression.CompressionLevel.Optimal;
     });
+
+    builder.Services.AddHealthChecks();
 }
