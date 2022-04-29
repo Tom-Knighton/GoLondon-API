@@ -24,7 +24,7 @@ namespace GoLondonAPI.Domain.Models
 
         public string[] modes { internal get; set; }
 
-        public LineMode[] lineModes => modes.Where(m => LineModeExtensions.GetFromString(m) != LineMode.unk).Select(m => LineModeExtensions.GetFromString(m)).ToArray();
+        public LineMode[] lineModes => modes?.Where(m => LineModeExtensions.GetFromString(m) != LineMode.unk).Select(m => LineModeExtensions.GetFromString(m)).ToArray() ?? Array.Empty<LineMode>();
 
         [JsonIgnore]
         public List<LineGroup> lineGroups { get; set; }
