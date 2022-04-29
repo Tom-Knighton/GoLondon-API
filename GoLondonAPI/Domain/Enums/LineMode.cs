@@ -11,6 +11,9 @@ namespace GoLondonAPI.Domain.Enums
     [ModelBinder(typeof(JsonModelBinder<LineMode>))]
     public enum LineMode
     {
+        [EnumMember(Value = "unk")]
+        unk,
+
         [EnumMember(Value = "tube")]
         tube,
 
@@ -22,6 +25,9 @@ namespace GoLondonAPI.Domain.Enums
 
         [EnumMember(Value = "national-rail")]
         nationalRail,
+
+        [EnumMember(Value = "international-rail")]
+        internationalRail,
 
         [EnumMember(Value = "overground")]
         overground,
@@ -41,5 +47,19 @@ namespace GoLondonAPI.Domain.Enums
         [EnumMember(Value = "tram")]
         tram
     }
+
+    public static class LineModeExtensions
+    {
+        /// <summary>
+        /// Returns the LineMode value, if any, associated with the Value string
+        /// </summary>
+        /// <param name="value">The Value string from the LineMode enum</param>
+        public static LineMode GetFromString(string value)
+        {
+            LineMode[] vals = Enum.GetValues<LineMode>();
+            return vals.FirstOrDefault(v => v.GetValue() == value);
+        }
+    }
+
 }
 
