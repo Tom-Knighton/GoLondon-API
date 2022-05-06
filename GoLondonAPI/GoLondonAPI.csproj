@@ -23,6 +23,12 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.4" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.3.1" />
 
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +44,11 @@
     <None Remove="Microsoft.AspNetCore.Mvc.NewtonsoftJson" />
     <None Remove="Swashbuckle.AspNetCore.Newtonsoft" />
     <None Remove="Hangfire" />
+    <None Remove="Pomelo.EntityFrameworkCore.MySql" />
+    <None Remove="Microsoft.EntityFrameworkCore.Design" />
+    <None Remove="Domain\Entities\" />
+    <None Remove="Microsoft.EntityFrameworkCore" />
+    <None Remove="Middleware\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\" />
@@ -47,6 +58,8 @@
     <Folder Include="Domain\Models\" />
     <Folder Include="Services\" />
     <Folder Include="Domain\Enums\" />
+    <Folder Include="Domain\Entities\" />
+    <Folder Include="Attributes\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

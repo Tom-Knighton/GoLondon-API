@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
+using GoLondonAPI.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoLondonAPI.Controllers
 {
+    [APIKeyAuth]
     [Route("api/[controller]")]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class JourneyController : Controller

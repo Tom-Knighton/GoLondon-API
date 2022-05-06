@@ -49,6 +49,8 @@ static void SetupServices(WebApplicationBuilder builder)
         Converters = new JsonConverter[] { new StringEnumConverter() }
     };
 
+    builder.Services.AddDbContext<DataContext>();
+
     builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("GoLondon"));
 
     builder.Services.AddScoped<ISearchService, SearchService>();
@@ -57,6 +59,8 @@ static void SetupServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IMetaService, MetaService>();
     builder.Services.AddScoped<IJourneyService, JourneyService>();
     builder.Services.AddScoped<IVehicleService, VehicleService>();
+
+    builder.Services.AddScoped<IUserService, UserService>();
 
     builder.Services.AddTransient<IAPIClient, APIClient>();
 
