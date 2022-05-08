@@ -21,6 +21,7 @@ namespace GoLondonAPI.Data
 
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Role> Roles { get; set; }
@@ -44,6 +45,15 @@ namespace GoLondonAPI.Data
                     .HasForeignKey<UserRole>(ur => ur.UserUUID)
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
+
+                user
+                    .HasMany(u => u.RefreshTokens)
+                    .WithOne(r => r.User)
+                    .HasForeignKey(r => r.UserUUID)
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                user.Ignore(u => u.AuthTokens);
             });
 
             builder.Entity<Project>(project =>
@@ -67,6 +77,11 @@ namespace GoLondonAPI.Data
             builder.Entity<UserRole>(userRole =>
             {
                 userRole.HasKey(ur => new { ur.UserUUID, ur.RoleId });
+            });
+
+            builder.Entity<UserRefreshToken>(token =>
+            {
+                token.HasKey(t => new { t.UserUUID, t.TokenClient });
             });
                 
         }

@@ -9,8 +9,11 @@
         public string UserPassSalt { get; set; }
         public bool IsDeleted { get; set; }
 
+        public virtual UserAuthenticationTokens AuthTokens { get; set; }
+
         public virtual ICollection<Project> Projects { get; set; }
         public virtual UserRole Role { get; set; }
+        public virtual ICollection<UserRefreshToken> RefreshTokens { get; set; }
     }
 }
 
