@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
+using GoLondonAPI.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GoLondonAPI.Controllers
 {
+    [APIKeyAuth]
     [Route("api/[controller]")]
     public class StopPointController : Controller
     {

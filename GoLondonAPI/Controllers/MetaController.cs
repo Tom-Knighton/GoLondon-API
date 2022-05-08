@@ -10,6 +10,7 @@ using Newtonsoft.Json.Converters;
 
 namespace GoLondonAPI.Controllers
 {
+    [APIKeyAuth]
     [Route("api/[controller]")]
     public class MetaController : Controller
     {

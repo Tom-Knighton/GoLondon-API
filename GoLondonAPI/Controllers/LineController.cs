@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
+using GoLondonAPI.Middleware;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GoLondonAPI.Controllers
 {
+    [APIKeyAuth]
     [Route("api/[controller]")]
     public class LineController : Controller
     {
