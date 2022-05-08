@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.ResponseCompression;
+using AspNetCoreRateLimit;
+using Microsoft.Extensions.Caching.Memory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,13 +33,22 @@ app.UseSwaggerUI();
 
 app.UseResponseCompression();
 
-
 app.UseHttpsRedirection();
+
+app.UseClientRateLimiting();
 
 app.UseAuthorization();
 
 app.MapControllers();
 app.MapHealthChecks("/health");
+
+using (var scope = app.Services.CreateScope())
+{
+    var clientPolicyStore = scope.ServiceProvider.GetRequiredService<IClientPolicyStore>();
+    var metaService = scope.ServiceProvider.GetRequiredService<IMetaService>();
+    await clientPolicyStore.SeedAsync();
+    await metaService.SyncLimits();
+}
 
 app.Run();
 
@@ -53,6 +64,16 @@ static void SetupServices(WebApplicationBuilder builder)
 
     builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("GoLondon"));
 
+    builder.Services.AddOptions();
+    builder.Services.AddMemoryCache();
+    builder.Services.Configure<ClientRateLimitOptions>(builder.Configuration.GetSection("ClientRateLimiting"));
+    builder.Services.Configure<ClientRateLimitPolicies>(builder.Configuration.GetSection("ClientRateLimitPolicies"));
+    builder.Services.AddInMemoryRateLimiting();
+
+    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IProjectService, ProjectService>();
+
+    builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
     builder.Services.AddScoped<ISearchService, SearchService>();
     builder.Services.AddScoped<IStopPointService, StopPointService>();
     builder.Services.AddScoped<ILineService, LineService>();
@@ -60,7 +81,6 @@ static void SetupServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<IJourneyService, JourneyService>();
     builder.Services.AddScoped<IVehicleService, VehicleService>();
 
-    builder.Services.AddScoped<IUserService, UserService>();
 
     builder.Services.AddTransient<IAPIClient, APIClient>();
 

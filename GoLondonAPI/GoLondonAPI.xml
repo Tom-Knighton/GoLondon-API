@@ -106,6 +106,16 @@
             </summary>
             <param name="vehicleId">The id of the vehicle, i.e. the license plate of a bus</param>
         </member>
+        <member name="M:GoLondonAPI.Extensions.IncludeIf``1(System.Linq.IQueryable{``0},System.Boolean,System.Linq.Expressions.Expression{System.Func{``0,System.Object}}[])">
+            <summary>
+            Specifies a related entity to include in the query, if the specified condition is met
+            </summary>
+            <typeparam name="TEntity">The entity type to include</typeparam>
+            <param name="source">The query</param>
+            <param name="condition">The condition to include the entity on</param>
+            <param name="navigationPropertyPaths">The related entities as paths i.e. s => s.User</param>
+            <returns></returns>
+        </member>
         <member name="M:GoLondonAPI.Domain.Enums.LineModeExtensions.GetFromString(System.String)">
             <summary>
             Returns the LineMode value, if any, associated with the Value string

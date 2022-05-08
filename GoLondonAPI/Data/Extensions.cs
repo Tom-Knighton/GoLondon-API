@@ -1,8 +1,11 @@
 ﻿
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -18,6 +21,30 @@ namespace GoLondonAPI
                 .SingleOrDefault(x => x.Name == value.ToString())
                 ?.GetCustomAttribute<EnumMemberAttribute>(false)
                 ?.Value ?? "";
+        }
+
+        /// <summary>
+        /// Specifies a related entity to include in the query, if the specified condition is met
+        /// </summary>
+        /// <typeparam name="TEntity">The entity type to include</typeparam>
+        /// <param name="source">The query</param>
+        /// <param name="condition">The condition to include the entity on</param>
+        /// <param name="navigationPropertyPaths">The related entities as paths i.e. s => s.User</param>
+        /// <returns></returns>
+        public static IQueryable<TEntity> IncludeIf<TEntity>([NotNull] this IQueryable<TEntity> source, bool condition, params Expression<Func<TEntity, object>>[] navigationPropertyPaths)
+               where TEntity : class
+        {
+            if (condition)
+            {
+                if (navigationPropertyPaths != null)
+                {
+                    foreach (var navigationPropertyPath in navigationPropertyPaths)
+                    {
+                        source = source.Include(navigationPropertyPath);
+                    }
+                }
+            }
+            return source;
         }
     }
 

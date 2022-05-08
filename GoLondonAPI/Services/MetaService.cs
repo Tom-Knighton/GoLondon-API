@@ -1,8 +1,11 @@
 ﻿using System;
+using AspNetCoreRateLimit;
 using GoLondonAPI.Data;
+using GoLondonAPI.Domain.Entities;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -11,8 +14,17 @@ namespace GoLondonAPI.Services
     public class MetaService : IMetaService
     {
         private readonly IAPIClient _apiClient;
+        private readonly IProjectService _projects;
+        private readonly ClientRateLimitOptions _options;
+        private readonly IClientPolicyStore _clientPolicyStore;
 
-        public MetaService(IAPIClient api) => _apiClient = api;
+        public MetaService(IAPIClient api, IProjectService projects, IOptions<ClientRateLimitOptions> opts, IClientPolicyStore store)
+        {
+            _apiClient = api;
+            _projects = projects;
+            _options = opts.Value;
+            _clientPolicyStore = store;
+        }
 
         public List<DisruptionDelayType> GetDelayTypes()
         {
@@ -52,6 +64,34 @@ namespace GoLondonAPI.Services
             Global.cachedLMGs = grouped;
 
             return "Recv: " + Global.cachedLMGs.Count.ToString();
+        }
+
+        public async Task SyncLimits()
+        {
+            // Get IClientLimit scope, loop through users keys and set based on role of user ig
+            // Basically get every user, get all their projects, set limit based on api key of project : user role limit
+            // Run this on startup + whenever anything changed
+
+            List<Project> projects = (await _projects.GetProjectsAsync(includeUsers: true)).ToList();
+            foreach (Project project in projects)
+            {
+                Role role = project.User.Role.Role;
+                string id = $"{_options.ClientPolicyPrefix}_{project.APIKey}";
+                ClientRateLimitPolicy policy = await _clientPolicyStore.GetAsync(id);
+                await _clientPolicyStore.SetAsync(id, new ClientRateLimitPolicy
+                {
+                    ClientId = project.APIKey,
+                    Rules = new List<RateLimitRule>
+                    {
+                         new RateLimitRule
+                         {
+                              Endpoint = "*",
+                              Period = "1m",
+                              Limit = role.CallsPerMin
+                         }
+                     }
+                });
+            }
         }
     }
 }

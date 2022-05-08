@@ -9,6 +9,7 @@ namespace GoLondonAPI.Domain.Services
         List<DisruptionDelayType> GetDelayTypes();
         Task<List<string>> GetAllLineIdsAsync(List<LineMode> modes);
         Task<string> SyncWithTfl();
+        Task SyncLimits();
     }
 }
 
