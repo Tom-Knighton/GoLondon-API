@@ -47,6 +47,11 @@ namespace GoLondonAPI.Services
                 .Where(u => !u.IsDeleted)
                 .ToListAsync();
         }
+
+        public async Task<bool> IsEmailFree(string email)
+        {
+            return !(await _context.Users.AnyAsync(u => !u.IsDeleted && u.UserEmail.ToLower().Trim() == email.ToLower().Trim()));
+        }
     }
 }
 

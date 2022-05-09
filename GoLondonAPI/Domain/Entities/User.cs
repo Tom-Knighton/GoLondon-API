@@ -15,5 +15,18 @@
         public virtual UserRole Role { get; set; }
         public virtual ICollection<UserRefreshToken> RefreshTokens { get; set; }
     }
+
+    public class AuthenticatingUser
+    {
+        public string UserEmailAddress { get; set; }
+        public string UserPassword { get; set; }
+    }
+
+    public class RegistratingUser
+    {
+        public string UserName { get; set; }
+        public string UserEmail { get; set; }
+        public string UserPassword { get; set; }
+    }
 }
 

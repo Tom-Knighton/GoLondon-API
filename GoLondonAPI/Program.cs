@@ -7,6 +7,9 @@ using Newtonsoft.Json;
 using Microsoft.AspNetCore.ResponseCompression;
 using AspNetCoreRateLimit;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson(o =>
 {
     o.SerializerSettings.Converters.Add(new StringEnumConverter());
+    o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });
 
 SetupServices(builder);
@@ -70,6 +74,7 @@ static void SetupServices(WebApplicationBuilder builder)
     builder.Services.Configure<ClientRateLimitPolicies>(builder.Configuration.GetSection("ClientRateLimitPolicies"));
     builder.Services.AddInMemoryRateLimiting();
 
+    builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IProjectService, ProjectService>();
 
@@ -97,4 +102,19 @@ static void SetupServices(WebApplicationBuilder builder)
     });
 
     builder.Services.AddHealthChecks();
+
+    builder.Services.AddAuthentication()
+        .AddJwtBearer(o =>
+        {
+            o.SaveToken = true;
+            o.RequireHttpsMetadata = true;
+            o.TokenValidationParameters = new()
+            {
+                ValidIssuer = builder.Configuration["GoLondon:Audience"],
+                ValidAudience = builder.Configuration["GoLondon:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["GoLondon:Secret"])),
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            };
+        });
 }
