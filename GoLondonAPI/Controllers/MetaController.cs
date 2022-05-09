@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Services;
+using GoLondonAPI.Middleware;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
