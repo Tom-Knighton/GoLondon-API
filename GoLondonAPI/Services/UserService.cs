@@ -15,6 +15,22 @@ namespace GoLondonAPI.Services
             _context = context;
         }
 
+        public async Task<User?> EditUserDetails(string userUUID, RegistratingUser details)
+        {
+            User user = await GetUserAsync(userUUID);
+            if (user == null)
+            {
+                return null;
+            }
+
+            user.UserName = details.UserName;
+            user.UserEmail = details.UserEmail;
+
+            _context.Update(user);
+            await _context.SaveChangesAsync();
+            return user;
+        }
+
         public async Task<User?> GetUserAsync(string userUUID)
         {
             return await _context.Users

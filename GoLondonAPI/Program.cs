@@ -103,7 +103,10 @@ static void SetupServices(WebApplicationBuilder builder)
 
     builder.Services.AddHealthChecks();
 
-    builder.Services.AddAuthentication()
+    builder.Services.AddAuthentication(o =>
+    {
+        o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
         .AddJwtBearer(o =>
         {
             o.SaveToken = true;

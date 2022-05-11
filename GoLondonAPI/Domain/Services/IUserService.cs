@@ -9,6 +9,8 @@ namespace GoLondonAPI.Domain.Services
         Task<User?> GetUserAsync(string userUUID);
         Task<User?> GetUserFromAPIKey(string apiKey);
         Task<bool> IsEmailFree(string email);
+
+        Task<User?> EditUserDetails(string userUUID, RegistratingUser details);
     }
 }
 

@@ -67,11 +67,7 @@ namespace GoLondonAPI.Services
         }
 
         public async Task SyncLimits()
-        {
-            // Get IClientLimit scope, loop through users keys and set based on role of user ig
-            // Basically get every user, get all their projects, set limit based on api key of project : user role limit
-            // Run this on startup + whenever anything changed
-
+        { 
             List<Project> projects = (await _projects.GetProjectsAsync(includeUsers: true)).ToList();
             foreach (Project project in projects)
             {
@@ -87,7 +83,7 @@ namespace GoLondonAPI.Services
                          {
                               Endpoint = "*",
                               Period = "1m",
-                              Limit = role.CallsPerMin
+                              Limit = role.CallsPerMin,
                          }
                      }
                 });

@@ -35,6 +35,8 @@ namespace GoLondonAPI.Controllers
             }
         }
 
+        //TODO: Add projects service, allow creation/deletion of projects, protected by JWT
+        //TODO: Then projects keys can access rest of api
 
         [HttpPost("Register")]
         [Produces(typeof(User))]
@@ -56,6 +58,18 @@ namespace GoLondonAPI.Controllers
             }
         }
 
+        [HttpPost("Refresh/{uuid}")]
+        [Produces(typeof(UserAuthenticationTokens))]
+        public async Task<IActionResult> RefreshTokens(string uuid, [FromBody] UserAuthenticationTokens tokens)
+        {
+            UserAuthenticationTokens newTokens = await _authService.RefreshTokensForUser(uuid, tokens.RefreshToken);
+            if (newTokens == null)
+            {
+                return BadRequest("Invalid refresh token");
+            }
+
+            return Ok(newTokens);
+        }
     }
 }
 

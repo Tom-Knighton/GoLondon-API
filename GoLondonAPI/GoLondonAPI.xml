@@ -43,9 +43,10 @@
             <param name="lineModes">The general status of the line modes selected</param>
         </member>
         <member name="M:GoLondonAPI.Controllers.MetaController.GetLineModes">
-            <summary>
-            Returns the possible line modes, used for/in several Line endpoints and data
-            </summary>
+             <summary>
+             Returns the possible line modes, used for/in several Line endpoints and data
+             </summary>
+            
         </member>
         <member name="M:GoLondonAPI.Controllers.MetaController.GetAllLineIds(GoLondonAPI.Domain.Enums.LineMode[])">
             <summary>

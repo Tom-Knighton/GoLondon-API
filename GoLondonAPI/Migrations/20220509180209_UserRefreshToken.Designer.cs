@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoLondonAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220508211533_UserRefreshTokens")]
-    partial class UserRefreshTokens
+    [Migration("20220509180209_UserRefreshToken")]
+    partial class UserRefreshToken
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -100,13 +100,13 @@ namespace GoLondonAPI.Migrations
                     b.Property<string>("UserUUID")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<string>("TokenClient")
+                    b.Property<string>("RefreshToken")
                         .HasColumnType("varchar(255)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("RefreshToken")
+                    b.Property<string>("TokenClient")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -116,7 +116,7 @@ namespace GoLondonAPI.Migrations
                     b.Property<DateTime?>("TokenIssueDate")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("UserUUID", "TokenClient");
+                    b.HasKey("UserUUID", "RefreshToken");
 
                     b.ToTable("UserRefreshTokens");
                 });

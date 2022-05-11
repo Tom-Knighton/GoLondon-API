@@ -29,6 +29,7 @@ namespace GoLondonAPI.Services
         public async Task<User?> Authenticate(AuthenticatingUser authUser, bool needsTokens = false)
         {
             User user = await _context.Users
+                .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.UserEmail.ToLower().Trim() == authUser.UserEmailAddress.ToLower().Trim());
             if (user == null)
                 return null;

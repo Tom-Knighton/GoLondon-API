@@ -72,6 +72,8 @@ namespace GoLondonAPI.Data
                     .HasForeignKey(ur => ur.RoleId)
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
+
+                role.Ignore(r => r.Users);
             });
 
             builder.Entity<UserRole>(userRole =>
@@ -81,7 +83,7 @@ namespace GoLondonAPI.Data
 
             builder.Entity<UserRefreshToken>(token =>
             {
-                token.HasKey(t => new { t.UserUUID, t.TokenClient });
+                token.HasKey(t => new { t.UserUUID, t.RefreshToken });
             });
                 
         }

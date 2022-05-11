@@ -22,6 +22,7 @@ namespace GoLondonAPI.Controllers
         /// <summary>
         /// Returns the possible line modes, used for/in several Line endpoints and data
         /// </summary>
+        ///
         [HttpGet("LineModes")]
         [Produces(typeof(List<LineMode>))]
         public IActionResult GetLineModes()

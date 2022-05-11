@@ -11,5 +11,11 @@ namespace GoLondonAPI.Domain.Entities
 
         public virtual User User { get; set; }
     }
+
+    public class CreateProjectDTO
+    {
+        public string UserUUID { get; set; }
+        public string ProjectName { get; set; }
+    }
 }
 
