@@ -10,6 +10,7 @@ namespace GoLondonAPI.Domain.Services
         Task<List<Line>> GetLineInfo(List<LineMode> modes, bool includeDetail = false);
         Task<List<Line>> GetLineInfo(List<string> lineIds, bool includeDetail = false);
         Task<LineModeGroupStatusType> GetGeneralLineStatus(List<LineMode> lineModes);
+        Task<List<LineRoutes>> GetRoutesForLines(string[] lineIdentifiers);
     }
 }
 

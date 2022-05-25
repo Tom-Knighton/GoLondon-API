@@ -32,9 +32,6 @@ namespace GoLondonAPI.Domain.Enums
         [EnumMember(Value = "overground")]
         overground,
 
-        [EnumMember(Value = "tflrail")]
-        tflRail,
-
         [EnumMember(Value = "elizabeth-line")]
         elizabethLine,
 

@@ -60,6 +60,18 @@ namespace GoLondonAPI.Services
             return toReturn;
             
         }
+
+        public async Task<List<LineRoutes>> GetRoutesForLines(string[] lineIdentifiers)
+        {
+            List<LineRoutes> routes = new();
+            foreach (string id in lineIdentifiers)
+            {
+                LineRoutes query = await _apiClient.PerformAsync<LineRoutes>(APIClientType.TFL, $"Line/{id}/Route/sequence/outbound");
+                routes.Add(query);
+            }
+
+            return routes;
+        }
     }
 }
 

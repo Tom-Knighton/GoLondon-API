@@ -74,5 +74,16 @@ namespace GoLondonAPI.Controllers
             }
             return Ok(await _lineService.GetGeneralLineStatus(lineModes.ToList()));
         }
+
+        /// <summary>
+        /// Returns a series of routes served by the passed lines, this includes branch ids and a list of stop points on each route
+        /// </summary>
+        /// <param name="lineIdentifiers">The identifiers of each line, i.e. bakerloo, elizabeth. (not tube, bus etc.)</param>
+        [HttpGet("Routes")]
+        [Produces(typeof(List<LineRoutes>))]
+        public async Task<IActionResult> GetRouteLinesFor([Required] [FromQuery] string[] lineIdentifiers)
+        {
+            return Ok(await _lineService.GetRoutesForLines(lineIdentifiers));
+        }
     }
 }

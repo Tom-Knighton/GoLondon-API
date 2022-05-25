@@ -42,6 +42,12 @@
             <remarks>This returns a set string from the <c>LineModeGroupStatusType</c> enum</remarks>
             <param name="lineModes">The general status of the line modes selected</param>
         </member>
+        <member name="M:GoLondonAPI.Controllers.LineController.GetRouteLinesFor(System.String[])">
+            <summary>
+            Returns a series of routes served by the passed lines, this includes branch ids and a list of stop points on each route
+            </summary>
+            <param name="lineIdentifiers">The identifiers of each line, i.e. bakerloo, elizabeth. (not tube, bus etc.)</param>
+        </member>
         <member name="M:GoLondonAPI.Controllers.MetaController.GetLineModes">
             <summary>
             Returns the possible line modes, used for/in several Line endpoints and data
