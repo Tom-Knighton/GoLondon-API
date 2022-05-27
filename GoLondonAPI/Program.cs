@@ -60,6 +60,8 @@ static void SetupServices(WebApplicationBuilder builder)
 
     builder.Services.AddTransient<IAPIClient, APIClient>();
 
+    builder.Services.AddHostedService<GLBackgroundService>();
+
     builder.Services.AddResponseCompression(opt =>
     {
         opt.EnableForHttps = true;
