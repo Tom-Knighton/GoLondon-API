@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GoLondonAPI.Data;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -56,6 +57,16 @@ namespace GoLondonAPI.Controllers
         public async Task<IActionResult> SyncWithTfL()
         {
             return Ok(await _metaService.SyncWithTfl());
+        }
+
+        /// <summary>
+        /// Gets the last modified time for the cached line routes
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("LastCachedRoutesTime")]
+        public IActionResult GetLastCachedRouteTime()
+        {
+            return Ok(Global.lastRouteCacheTime);
         }
     }
 }

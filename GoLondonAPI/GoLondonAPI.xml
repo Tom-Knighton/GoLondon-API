@@ -42,11 +42,13 @@
             <remarks>This returns a set string from the <c>LineModeGroupStatusType</c> enum</remarks>
             <param name="lineModes">The general status of the line modes selected</param>
         </member>
-        <member name="M:GoLondonAPI.Controllers.LineController.GetRouteLinesFor(System.String[])">
+        <member name="M:GoLondonAPI.Controllers.LineController.GetRouteLinesFor(System.String[],System.Boolean)">
             <summary>
             Returns a series of routes served by the passed lines, this includes branch ids and a list of stop points on each route
             </summary>
             <param name="lineIdentifiers">The identifiers of each line, i.e. bakerloo, elizabeth. (not tube, bus etc.)</param>
+            <param name="fixCoordinates">Whether or not to fix coordinates in routes returned. If true, and multiple lines are passed, lines that pass
+            through the same stop point will feature the same coordinate for that stop point, rather than their true coordinate (i.e. stratford DLR coord vs stratford central coord)</param>
         </member>
         <member name="M:GoLondonAPI.Controllers.MetaController.GetLineModes">
             <summary>
@@ -62,6 +64,12 @@
             <summary>
             Returns the possible Delay Types
             </summary>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.MetaController.GetLastCachedRouteTime">
+            <summary>
+            Gets the last modified time for the cached line routes
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:GoLondonAPI.Controllers.SearchController.SearchStopPointsAround(System.Single,System.Single,System.Collections.Generic.List{GoLondonAPI.Domain.Enums.LineMode},System.Single,System.Boolean)">
             <summary>
@@ -111,6 +119,18 @@
             Returns an ordered list of StopPointArrivals for a specified vehicle
             </summary>
             <param name="vehicleId">The id of the vehicle, i.e. the license plate of a bus</param>
+        </member>
+        <member name="M:GoLondonAPI.Data.Global.UpdateCachedLineRoutes(System.Collections.Generic.ICollection{GoLondonAPI.Domain.Models.LineRoutes})">
+            <summary>
+            Updates the cached line routes and the last cached time
+            </summary>
+            <param name="routes">The routes to be set in the cache. This collection will overwrite any currently stored routes</param>
+        </member>
+        <member name="M:GoLondonAPI.Data.Global.AddLineRouteToCache(GoLondonAPI.Domain.Models.LineRoutes)">
+            <summary>
+            Adds a line route to the cache. This will not overwrite the current cache, simply add a new line routes
+            </summary>
+            <param name="route">The line w/ routes to add. This method will silently fail if the line already exists in cache</param>
         </member>
         <member name="M:GoLondonAPI.Domain.Enums.LineModeExtensions.GetFromString(System.String)">
             <summary>

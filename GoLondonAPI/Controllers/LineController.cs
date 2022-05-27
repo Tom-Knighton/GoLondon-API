@@ -79,11 +79,13 @@ namespace GoLondonAPI.Controllers
         /// Returns a series of routes served by the passed lines, this includes branch ids and a list of stop points on each route
         /// </summary>
         /// <param name="lineIdentifiers">The identifiers of each line, i.e. bakerloo, elizabeth. (not tube, bus etc.)</param>
+        /// <param name="fixCoordinates">Whether or not to fix coordinates in routes returned. If true, and multiple lines are passed, lines that pass
+        /// through the same stop point will feature the same coordinate for that stop point, rather than their true coordinate (i.e. stratford DLR coord vs stratford central coord)</param>
         [HttpGet("Routes")]
         [Produces(typeof(List<LineRoutes>))]
-        public async Task<IActionResult> GetRouteLinesFor([Required] [FromQuery] string[] lineIdentifiers)
+        public async Task<IActionResult> GetRouteLinesFor([Required] [FromQuery] string[] lineIdentifiers, bool fixCoordinates = true)
         {
-            return Ok(await _lineService.GetRoutesForLines(lineIdentifiers));
+            return Ok(await _lineService.GetRoutesForLines(lineIdentifiers, fixCoordinates));
         }
     }
 }

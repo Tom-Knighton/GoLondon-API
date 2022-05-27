@@ -1,7 +1,9 @@
 ﻿using System;
+using GoLondonAPI.Data;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
+using Newtonsoft.Json;
 
 namespace GoLondonAPI.Services
 {
@@ -61,14 +63,58 @@ namespace GoLondonAPI.Services
             
         }
 
-        public async Task<List<LineRoutes>> GetRoutesForLines(string[] lineIdentifiers)
+        public async Task<List<LineRoutes>> GetRoutesForLines(string[] lineIdentifiers, bool fixCoordinates = true)
         {
-            List<LineRoutes> routes = new();
-            foreach (string id in lineIdentifiers)
+            List<LineRoutes> routes = Global.cachedLineRoutes.Where(l => lineIdentifiers.Contains(l.lineId)).ToList();
+
+            if (routes.Count != lineIdentifiers.Length)
             {
-                LineRoutes query = await _apiClient.PerformAsync<LineRoutes>(APIClientType.TFL, $"Line/{id}/Route/sequence/outbound");
-                routes.Add(query);
+                List<Task<LineRoutes>> tasksToDo = new();
+                foreach (string id in lineIdentifiers.Where(id => !routes.Any(r => r.lineId == id)))
+                {
+
+                    tasksToDo.Add(_apiClient.PerformAsync<LineRoutes>(APIClientType.TFL, $"Line/{id}/Route/sequence/outbound"));
+                }
+
+                routes.AddRange((await Task.WhenAll(tasksToDo)).ToList());
+                routes.ForEach(r =>
+                {
+                    Global.AddLineRouteToCache(r);
+                });
             }
+            
+            if (!fixCoordinates)
+            {
+                return routes;
+            }
+
+            // Go through routes and fix coordinates for stop points
+            // Make sure stop points that have same id, have the same coordinate
+            string serialised = JsonConvert.SerializeObject(routes);
+            routes = JsonConvert.DeserializeObject<List<LineRoutes>>(serialised);
+            Dictionary<string, Tuple<float, float>> cachedCoords = new();
+            routes!.ForEach(route =>
+            {
+                route.stopPointSequences.ToList().ForEach(branch =>
+                {
+                    branch.stopPoint.ToList().ForEach(sp =>
+                    {
+                        Tuple<float, float> coords = new(sp.lat, sp.lon);
+                        if (cachedCoords.ContainsKey(sp.icsId))
+                        {
+                            if ((coords.Item1 != cachedCoords[sp.icsId].Item1) || (coords.Item2 != cachedCoords[sp.icsId].Item2))
+                            {
+                                sp.lat = cachedCoords[sp.icsId].Item1;
+                                sp.lon = cachedCoords[sp.icsId].Item2;
+                            }
+                        }
+                        else
+                        {
+                            cachedCoords.Add(sp.icsId, new(sp.lat, sp.lon));
+                        }
+                    });
+                });
+            });
 
             return routes;
         }
