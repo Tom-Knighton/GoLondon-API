@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
+using System.Xml.Serialization;
 using GoLondonAPI.Data;
 using GoLondonAPI.Domain.Enums;
+using GoLondonAPI.Domain.Models;
 using GoLondonAPI.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -67,6 +70,26 @@ namespace GoLondonAPI.Controllers
         public IActionResult GetLastCachedRouteTime()
         {
             return Ok(Global.lastRouteCacheTime);
+        }
+
+        /// <summary>
+        /// Returns data cached from TfL Irad, in a slimmed down format
+        /// </summary>
+        /// <returns>A list of StopPointAccessibility objects, containing an overall accessibility rating and information for relevant lines</returns>
+        [HttpGet("GetAccessibility")]
+        public IActionResult GetAccessibility()
+        {
+            return Ok(Global.cachedIradData);
+        }
+
+        /// <summary>
+        /// Gets the last modified time for the cached irad accessibility data
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("LastCachedAccessibilityTime")]
+        public IActionResult GetLastCachedAccessibilityTime()
+        {
+            return Ok(Global.lastIradCacheTime);
         }
     }
 }

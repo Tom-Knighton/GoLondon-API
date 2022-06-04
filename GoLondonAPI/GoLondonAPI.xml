@@ -71,6 +71,18 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:GoLondonAPI.Controllers.MetaController.GetAccessibility">
+            <summary>
+            Returns data cached from TfL Irad, in a slimmed down format
+            </summary>
+            <returns>A list of StopPointAccessibility objects, containing an overall accessibility rating and information for relevant lines</returns>
+        </member>
+        <member name="M:GoLondonAPI.Controllers.MetaController.GetLastCachedAccessibilityTime">
+            <summary>
+            Gets the last modified time for the cached irad accessibility data
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:GoLondonAPI.Controllers.SearchController.SearchStopPointsAround(System.Single,System.Single,System.Collections.Generic.List{GoLondonAPI.Domain.Enums.LineMode},System.Single,System.Boolean)">
             <summary>
             Returns a list of StopPoints around a specified location
@@ -131,6 +143,12 @@
             Adds a line route to the cache. This will not overwrite the current cache, simply add a new line routes
             </summary>
             <param name="route">The line w/ routes to add. This method will silently fail if the line already exists in cache</param>
+        </member>
+        <member name="M:GoLondonAPI.Data.Global.UpdateIradCache(System.Collections.Generic.List{GoLondonAPI.Domain.Models.StopPointAccessibility})">
+            <summary>
+            Updates the cached IRAD accessibility data and the last cache time
+            </summary>
+            <param name="withData">The data to be set in cache. This will overwrite any currently stored IRAD cache</param>
         </member>
         <member name="M:GoLondonAPI.Domain.Enums.LineModeExtensions.GetFromString(System.String)">
             <summary>

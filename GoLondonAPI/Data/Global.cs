@@ -1,4 +1,5 @@
 ﻿using System;
+using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
 
 namespace GoLondonAPI.Data
@@ -9,6 +10,9 @@ namespace GoLondonAPI.Data
 
         public static HashSet<LineRoutes> cachedLineRoutes { get; private set; } = new();
         public static DateTime? lastRouteCacheTime { get; private set; }
+
+        public static HashSet<StopPointAccessibility> cachedIradData { get; private set; } = new();
+        public static DateTime? lastIradCacheTime { get; private set; }
 
         public static List<StopPoint> AddCachedLineModeGroups(List<StopPoint> toPoints)
         {
@@ -44,6 +48,16 @@ namespace GoLondonAPI.Data
             {
                 cachedLineRoutes.Add(route);
             }
+        }
+
+        /// <summary>
+        /// Updates the cached IRAD accessibility data and the last cache time
+        /// </summary>
+        /// <param name="withData">The data to be set in cache. This will overwrite any currently stored IRAD cache</param>
+        public static void UpdateIradCache(List<StopPointAccessibility> withData)
+        {
+            cachedIradData = withData.ToHashSet();
+            lastIradCacheTime = DateTime.UtcNow;
         }
     }
 }

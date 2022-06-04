@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Xml;
+using System.Xml.Serialization;
 using GoLondonAPI.Data;
 using GoLondonAPI.Domain.Enums;
 using GoLondonAPI.Domain.Models;
