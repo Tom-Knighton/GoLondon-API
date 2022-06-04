@@ -144,7 +144,7 @@
             </summary>
             <param name="route">The line w/ routes to add. This method will silently fail if the line already exists in cache</param>
         </member>
-        <member name="M:GoLondonAPI.Data.Global.UpdateIradCache(System.Collections.Generic.List{GoLondonAPI.Domain.Models.StopPointAccessibility})">
+        <member name="M:GoLondonAPI.Data.Global.UpdateIradCache(System.Collections.Generic.ICollection{GoLondonAPI.Domain.Models.StopPointAccessibility})">
             <summary>
             Updates the cached IRAD accessibility data and the last cache time
             </summary>

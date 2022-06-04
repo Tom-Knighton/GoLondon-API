@@ -34,8 +34,11 @@ namespace GoLondonAPI.Data
         /// <param name="routes">The routes to be set in the cache. This collection will overwrite any currently stored routes</param>
         public static void UpdateCachedLineRoutes(ICollection<LineRoutes> routes)
         {
-            cachedLineRoutes = routes.ToHashSet();
-            lastRouteCacheTime = DateTime.UtcNow;
+            if (cachedLineRoutes != routes)
+            {
+                cachedLineRoutes = routes.ToHashSet();
+                lastRouteCacheTime = DateTime.UtcNow;
+            }
         }
 
         /// <summary>
@@ -48,16 +51,20 @@ namespace GoLondonAPI.Data
             {
                 cachedLineRoutes.Add(route);
             }
+            lastRouteCacheTime = DateTime.UtcNow;
         }
 
         /// <summary>
         /// Updates the cached IRAD accessibility data and the last cache time
         /// </summary>
         /// <param name="withData">The data to be set in cache. This will overwrite any currently stored IRAD cache</param>
-        public static void UpdateIradCache(List<StopPointAccessibility> withData)
+        public static void UpdateIradCache(ICollection<StopPointAccessibility> withData)
         {
-            cachedIradData = withData.ToHashSet();
-            lastIradCacheTime = DateTime.UtcNow;
+            if (cachedIradData != withData)
+            {
+                cachedIradData = withData.ToHashSet();
+                lastIradCacheTime = DateTime.UtcNow;
+            }
         }
     }
 }
