@@ -23,7 +23,7 @@ namespace GoLondonAPI.Domain.Models
 		public enum StationAccessibilityType
         {
 			StepFreeToTrain,
-			StepFreeToToPlatform,
+			StepFreeToPlatform,
 			Partial,
 			Interchange,
 			None
@@ -45,15 +45,15 @@ namespace GoLondonAPI.Domain.Models
 					{
 						LineName = line.LineName,
 						LineDirection = line.Direction,
-						Accessibility = hasZeroGap && !hasManualRamp ? StationAccessibilityType.StepFreeToTrain : hasZeroGap ? StationAccessibilityType.StepFreeToToPlatform : StationAccessibilityType.None
+						Accessibility = hasZeroGap && !hasManualRamp ? StationAccessibilityType.StepFreeToTrain : hasZeroGap ? StationAccessibilityType.StepFreeToPlatform : StationAccessibilityType.None
 					}); ;
                 }
             }
 
 			this.LineAccessibility = lines;
 			bool hasAllStepFreeToTrain = lines.All(l => l.Accessibility == StationAccessibilityType.StepFreeToTrain);
-			bool hasAnyStepFreeToPlatform = lines.Any(l => l.Accessibility == StationAccessibilityType.StepFreeToToPlatform);
-			this.OverviewAccessibility = hasAllStepFreeToTrain ? StationAccessibilityType.StepFreeToTrain : hasAnyStepFreeToPlatform ? StationAccessibilityType.StepFreeToToPlatform : StationAccessibilityType.None;
+			bool hasAnyStepFreeToPlatform = lines.Any(l => l.Accessibility == StationAccessibilityType.StepFreeToPlatform);
+			this.OverviewAccessibility = hasAllStepFreeToTrain ? StationAccessibilityType.StepFreeToTrain : hasAnyStepFreeToPlatform ? StationAccessibilityType.StepFreeToPlatform : StationAccessibilityType.None;
 			this.OverviewAccessibility = fromLink.AccessibilityType == "Partial" ? StationAccessibilityType.Partial : fromLink.AccessibilityType == "Interchange" ? StationAccessibilityType.Interchange : this.OverviewAccessibility;
 		}
     }
