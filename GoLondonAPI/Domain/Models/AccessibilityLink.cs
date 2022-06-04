@@ -55,6 +55,7 @@ namespace GoLondonAPI.Domain.Models
 			bool hasAnyStepFreeToPlatform = lines.Any(l => l.Accessibility == StationAccessibilityType.StepFreeToPlatform);
 			this.OverviewAccessibility = hasAllStepFreeToTrain ? StationAccessibilityType.StepFreeToTrain : hasAnyStepFreeToPlatform ? StationAccessibilityType.StepFreeToPlatform : StationAccessibilityType.None;
 			this.OverviewAccessibility = fromLink.AccessibilityType == "Partial" ? StationAccessibilityType.Partial : fromLink.AccessibilityType == "Interchange" ? StationAccessibilityType.Interchange : this.OverviewAccessibility;
+			this.OverviewAccessibility = fromLink.AccessibilityType == "None" ? StationAccessibilityType.None : this.OverviewAccessibility;
 		}
     }
 
