@@ -39,6 +39,7 @@ namespace GoLondonAPI.Services
             StopPointSearchResult res = await _apiClient.PerformAsync<StopPointSearchResult>(APIClientType.TFL, $"StopPoint/Search{queries}&useStopPointHierarchy=true");
             List<StopPoint> points = res.matches ?? new List<StopPoint>();
             points = useHeirarchy ? points : DeconstructHeirarchy(points);
+
             return Global.AddCachedLineModeGroups(points);
         }
 
@@ -59,7 +60,15 @@ namespace GoLondonAPI.Services
             string modes = string.Join(",", filters.Select(m => m.GetValue()));
             string query = $"?lat={lat}&lon={lon}&stoptypes=NaptanMetroStation,NaptanRailStation,NaptanBusCoachStation,NaptanFerryPort,NaptanPublicBusCoachTram&modes={(filters.Count == 0 ? "" : modes)}&radius={radius}&useStopPointHierarchy=true";
             StopPointSearchAroundResult res = await _apiClient.PerformAsync<StopPointSearchAroundResult>(APIClientType.TFL, $"StopPoint{query}");
-            List<StopPoint> points = res.stopPoints ?? new List<StopPoint>();
+            List<StopPoint> points = useHierarchy ? res.stopPoints ?? new() : DeconstructHeirarchy(res.stopPoints ?? new());
+
+            points.ForEach(p =>
+            {
+                p.modes.RemoveAll(m => !filters.Contains(LineModeExtensions.GetFromString(m)));
+                p.lineModeGroups.RemoveAll(m => !filters.Contains(m.modeName));
+            });
+
+            points.RemoveAll(p => p.modes.Count == 0);
 
             return useHierarchy ? points : DeconstructHeirarchy(points);
         }
