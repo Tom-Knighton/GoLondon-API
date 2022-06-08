@@ -22,9 +22,9 @@ namespace GoLondonAPI.Domain.Models
 
         public string hubNaptanCode { get; set; }
 
-        public string[] modes { internal get; set; }
+        public List<string> modes { internal get; set; }
 
-        public LineMode[] lineModes => modes?.Where(m => LineModeExtensions.GetFromString(m) != LineMode.unk).Select(m => LineModeExtensions.GetFromString(m)).ToArray() ?? Array.Empty<LineMode>();
+        public List<LineMode> lineModes => modes?.Where(m => LineModeExtensions.GetFromString(m) != LineMode.unk).Select(m => LineModeExtensions.GetFromString(m)).ToList() ?? new();
 
         [JsonIgnore]
         public List<LineGroup> lineGroups { get; set; }

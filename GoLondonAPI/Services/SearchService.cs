@@ -69,7 +69,7 @@ namespace GoLondonAPI.Services
             List<StopPoint> results = new();
             points.ForEach(p =>
             {
-                List<StopPoint> busChildren = p.children?.Where(c => c.lineModes?.Length == 1 && c.lineModes.First() == LineMode.bus).ToList();
+                List<StopPoint> busChildren = p.children?.Where(c => c.lineModes?.Count == 1 && c.lineModes.First() == LineMode.bus).ToList();
                 if (busChildren?.Any() == true)
                 {         
                     busChildren.ForEach(bc =>
@@ -81,6 +81,10 @@ namespace GoLondonAPI.Services
                         bc.lineModeGroups = new List<LineModeGroup> { lineModeGroup };
                         results.Add(bc);
                         p.children?.RemoveAll(c => c.naptanId == bc.naptanId);
+
+                        p.children?.Remove(bc);
+                        p.modes.RemoveAll(lm => lm == LineMode.bus.GetValue());
+                        p.lineModeGroups.RemoveAll(lmg => lmg.modeName == LineMode.bus);
                     });
                 }
                 results.Add(p);
