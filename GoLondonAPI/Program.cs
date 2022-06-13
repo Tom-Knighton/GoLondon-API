@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers().AddNewtonsoftJson(o =>
 {
     o.SerializerSettings.Converters.Add(new StringEnumConverter());
+    o.SerializerSettings.DateFormatString = "yyyy-MM-dd'T'HH:mm:ss";
 });
 
 SetupServices(builder);
@@ -46,7 +47,8 @@ static void SetupServices(WebApplicationBuilder builder)
 
     JsonConvert.DefaultSettings = () => new JsonSerializerSettings
     {
-        Converters = new JsonConverter[] { new StringEnumConverter() }
+        Converters = new JsonConverter[] { new StringEnumConverter() },
+        DateFormatString = "yyyy-MM-dd'T'HH:mm:ss"
     };
 
     builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("GoLondon"));
