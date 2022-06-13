@@ -45,7 +45,7 @@ namespace GoLondonAPI.Domain.Models
 					{
 						LineName = line.LineName,
 						LineDirection = line.Direction,
-						Accessibility = hasZeroGap && !hasManualRamp ? StationAccessibilityType.StepFreeToTrain : hasZeroGap ? StationAccessibilityType.StepFreeToPlatform : StationAccessibilityType.None
+						Accessibility = fromLink.AccessibilityType == "Interchange" ? StationAccessibilityType.Interchange : hasZeroGap && !hasManualRamp ? StationAccessibilityType.StepFreeToTrain : hasZeroGap ? StationAccessibilityType.StepFreeToPlatform : StationAccessibilityType.None
 					}); ;
                 }
             }
