@@ -93,6 +93,7 @@ namespace GoLondonAPI.Services
             string serialised = JsonConvert.SerializeObject(routes);
             routes = JsonConvert.DeserializeObject<List<LineRoutes>>(serialised);
             Dictionary<string, Tuple<float, float>> cachedCoords = new();
+
             routes!.ForEach(route =>
             {
                 route.stopPointSequences.ToList().ForEach(branch =>
@@ -100,17 +101,18 @@ namespace GoLondonAPI.Services
                     branch.stopPoint.ToList().ForEach(sp =>
                     {
                         Tuple<float, float> coords = new(sp.lat, sp.lon);
-                        if (cachedCoords.ContainsKey(sp.icsId))
+                        string key = sp.name.StartsWith("Custom House") ? "Custom House" : sp.id;
+                        if (cachedCoords.ContainsKey(key))
                         {
-                            if ((coords.Item1 != cachedCoords[sp.icsId].Item1) || (coords.Item2 != cachedCoords[sp.icsId].Item2))
+                            if ((coords.Item1 != cachedCoords[key].Item1) || (coords.Item2 != cachedCoords[key].Item2))
                             {
-                                sp.lat = cachedCoords[sp.icsId].Item1;
-                                sp.lon = cachedCoords[sp.icsId].Item2;
+                                sp.lat = cachedCoords[key].Item1;
+                                sp.lon = cachedCoords[key].Item2;
                             }
                         }
                         else
                         {
-                            cachedCoords.Add(sp.icsId, new(sp.lat, sp.lon));
+                            cachedCoords.Add(key, new(sp.lat, sp.lon));
                         }
                     });
                 });
