@@ -11,6 +11,7 @@ namespace GoLondonAPI.Domain.Models
         public string direction { get; set; }
         public string destinationName { get; set; }
         public int timeToStation { get; set; }
+        public DateTime expectedArrival { get; set; } 
         public string currentLocation { get; set; }
         public string stationName { get; set; }
         public string towards { get; set; }
